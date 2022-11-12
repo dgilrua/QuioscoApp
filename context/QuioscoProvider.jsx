@@ -59,9 +59,25 @@ const QuioscoProvider = ({children}) => {
         setPedido(productosActualizados)
     }
 
-    const handleEnviarPedido = e => {
+    const handleEnviarPedido = async e => {
         e.preventDefault()
-        console.log('enviando pedido')
+        
+        try {
+            axios.post('/api/ordenes',{pedido, nombre, total, fecha: Date.now().toString()})
+
+            setPedido([])
+            setNombre('')
+            setTotal(0)
+
+            toast.success('El pedido ha sido agregado correctamente')
+
+            setTimeout(() => {
+                router.push('/')
+            }, 2000);
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {
